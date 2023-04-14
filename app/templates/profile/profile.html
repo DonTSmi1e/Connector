@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-3 text-center border rounded"><br>
+            <h3>Профиль</h3>
+            <ul class="list-group">
+                <li class="list-group-item">{{ user.name }}</li>
+                <li class="list-group-item">
+                    {% if user.admin == 0 %}
+                        <span class="badge text-bg-secondary">Пользователь</span>
+                    {% elif user.admin == 1 %}
+                        <span class="badge text-bg-primary">Модератор</span>
+                    {% elif user.admin == 2 %}
+                        <span class="badge text-bg-danger">Администратор</span>
+                    {% endif %}
+                </li>
+                {% if user.id == current_user.id %}
+                    <li class="list-group-item">
+                        <a href="/profile/settings" class="btn border rounded" style="width: 100%;">Настройки</a>
+                        <hr>
+                        <a href="/post/create" class="btn border rounded" style="width: 100%;">Создать пост</a>
+                    </li>
+                {% endif %}
+            </ul>
+            ID: {{ user.id }}
+        <br></div>
+        <div class="col border rounded"><p>
+            {% if user.admin == 2 %}
+                {{ user.description | safe }}
+            {% else %}
+                {{ user.description }}
+            {% endif %}
+        </p></div>
+    </div>
+    <br>
+    <div class="row">
+        {% for post in posts %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                <h5 class="card-title">{{ post["title"] }}</h5>
+                <p class="card-text text-truncate">{{ post["content"] }}</p>
+                <a href="/post/{{ post['id'] }}" class="card-link">Читать</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

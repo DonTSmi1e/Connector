@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="column is-4 is-offset-4">
+        <div class="box">
+            <br>
+            <div class="container">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-dismissible alert-success" role="alert">
+                            {{ messages[0] }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <form method="POST" spellcheck="false">
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Изменить описание профиля:</label>
+                        <textarea class="form-control" name="description" rows="20">{{ current_user.description }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Применить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
