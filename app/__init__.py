@@ -33,6 +33,12 @@ def create_app():
     from .post import post as post_blueprint
     app.register_blueprint(post_blueprint)
 
+    from .help import help as help_blueprint
+    app.register_blueprint(help_blueprint)
+
+    from .admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint)
+
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 

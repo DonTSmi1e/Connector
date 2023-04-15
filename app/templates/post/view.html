@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-3 text-center border rounded"><br>
+            <h3>Автор</h3>
+            <ul class="list-group">
+                <li class="list-group-item">{{ user.name }}</li>
+                <li class="list-group-item">
+                    {% if user.admin == 0 %}
+                        <span class="badge text-bg-secondary">Пользователь</span>
+                    {% elif user.admin == 1 %}
+                        <span class="badge text-bg-primary">Модератор</span>
+                    {% elif user.admin == 2 %}
+                        <span class="badge text-bg-danger">Администратор</span>
+                    {% endif %}
+                </li>
+            </ul>
+            <br>
+            <a class="btn" href="{{ url_for('main.profile') }}/{{ user.id }}">Перейти</a>
+        <br></div>
+        <div class="col border rounded"><p>
+            <h2>{{ post["title"] }}</h2>
+            <h4>{{ post_author }}</h4>
+            {% for line in post["content"].split("\n") %}
+                {{ line }}<br>
+            {% endfor %}
+        </p></div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col border rounded">
+            <br>
+            <h5>Обсуждение</h5>
+
+            {% if current_user.ban != 1 %}
+                <form method="POST">
+                    <div class="mb-3">
+                        <input type="text" required class="form-control" name="content"><br>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </div>
+                </form>
+            {% endif %}
+            <hr>
+            {% for comment in comments %}
+                <strong>{{ comment[0] }}</strong>
+                {% if comment[1] == 0 %}
+                    <span class="badge text-bg-secondary">Пользователь</span>
+                {% elif comment[1] == 1 %}
+                    <span class="badge text-bg-primary">Модератор</span>
+                {% elif comment[1] == 2 %}
+                    <span class="badge text-bg-danger">Администратор</span>
+                {% endif %}
+                {{ comment[2] }}
+                <br>
+            {% endfor %}
+            <hr>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

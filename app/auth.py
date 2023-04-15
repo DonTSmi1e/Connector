@@ -31,18 +31,23 @@ def signup():
         name = request.form.get('name')
         password = request.form.get('password')
 
+        if name.replace(" ", "") == "" and password.replace(" ", "") == "":
+            flash('Поля не должны быть пустыми.')
+            return redirect(url_for('auth.signup'))
+
         user = User.query.filter_by(name=name).first()
 
         if user:
             flash('Данное имя пользователя уже зарегистрировано. Придумайте что нибудь еще.')
             return redirect(url_for('auth.signup'))
 
-        new_user = User(name=name, password=generate_password_hash(password, method='sha256'), description="Новый аккаунт", admin=2 if name == "DonTSmi1e" else 0)
+        new_user = User(name=name, password=generate_password_hash(password, method='sha256'), description="Новый аккаунт", admin=2 if name == "DonTSmi1e" else 0, ban=0)
 
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect(url_for('auth.login'))
+        login_user(User.query.filter_by(name=name).first(), remember=False)
+        return redirect(url_for('main.profile'))
     else:
         return render_template('signup.html')
 

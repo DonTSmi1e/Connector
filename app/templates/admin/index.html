@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="column is-4 is-offset-4">
+        <br>
+        <center><h2>Панель администратора</h2></center>
+        <div class="box">
+            <br>
+            <div class="container">
+                <br><h4>Утилиты</h4><hr>
+                <form method="POST" action="{{ url_for('admin.utils', id=1) }}">
+                    <button type="submit" class="btn btn-primary">Очистить недоступные публикации</button>
+                </form><br>
+                <form method="POST" action="{{ url_for('admin.utils', id=3) }}">
+                    <button type="submit" class="btn btn-danger">Очистить все комментарии</button>
+                </form><br>
+                <form method="POST" action="{{ url_for('admin.utils', id=4) }}">
+                    <button type="submit" class="btn btn-warning">Удалить все забаненные аккаунты</button>
+                </form><br>
+                <form method="POST" action="{{ url_for('admin.utils', id=5) }}">
+                    <button type="submit" class="btn btn-warning">Разбанить все аккаунты</button>
+                </form><br>
+
+                <br><h4>Управление БД</h4><hr>
+                <form method="POST" action="{{ url_for('admin.utils', id=6,) }}">
+                    <label class="form-label">ID аккаунта</label>
+                    <input type="text" class="form-control" name="id">
+                    <button type="submit" class="btn btn-danger">Удалить аккаунт</button>
+                </form><br>
+                <form method="POST" action="{{ url_for('admin.utils', id=7) }}">
+                    <label class="form-label">ID поста</label>
+                    <input type="text" class="form-control" name="id">
+                    <button type="submit" class="btn btn-danger">Удалить пост</button>
+                </form><br>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

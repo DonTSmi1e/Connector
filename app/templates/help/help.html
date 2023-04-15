@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+<div class="container-fluid">
+    <h3>Центр помощи</h3><hr>
+    {% for help in help_list %}
+        <a href="/help/{{ help[2] }}"><h4>{{ help[0] }}</h4></a>
+    {% endfor %}
+</div>
+
+{% endblock %}

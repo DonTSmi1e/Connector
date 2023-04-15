@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
+from sqlalchemy import desc
 
 from .models import User
 from .models import Post
@@ -14,15 +15,15 @@ def index():
 @main.route('/profile')
 @login_required
 def profile():
-    return render_template('profile/profile.html', user=current_user, posts=Post.query.filter_by(author_id=current_user.id))
+    return render_template('profile/profile.html', user=current_user, posts=Post.query.order_by(desc(Post.id)).filter_by(author_id=current_user.id))
 
 @main.route('/profile/<int:id>')
 def profile_id(id):
     user = User.query.filter_by(id=id).first()
     if user:
-        return render_template('profile/profile.html', user=user, posts=Post.query.filter_by(author_id=user.id))
+        return render_template('profile/profile.html', user=user, posts=Post.query.order_by(desc(Post.id)).filter_by(author_id=user.id))
     else:
-        return render_template('profile/profile_notfound.html')
+        return render_template('error/not_found.html', message="Профиль не найден.")
 
 @main.route('/profile/settings', methods=['GET', 'POST'])
 @login_required

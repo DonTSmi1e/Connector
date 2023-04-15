@@ -15,13 +15,23 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/post">Посты</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/help">Помощь</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav btn-group">
                         {% if not current_user.is_anonymous %}
                             <li class="nav-item">
-                                <a class="btn btn-secondary" href="/profile">{{ current_user.name }}</a>
+                                {% if current_user.ban == 1 %}
+                                    <a class="btn btn-warning" href="/profile">{{ current_user.name }}</a>
+                                {% else %}
+                                    {% if current_user.admin >= 1 %}
+                                        <a class="btn btn-secondary" href="{{ url_for('admin.index') }}">Панель администратора</a>
+                                    {% endif %}
+                                    <a class="btn btn-secondary" href="/profile">{{ current_user.name }}</a>
+                                {% endif %}
                                 <a class="btn btn-danger" href="/logout">Выйти</a>
                             </li>
                         {% else %}
