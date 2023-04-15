@@ -34,6 +34,13 @@ def signup():
         if name.replace(" ", "") == "" and password.replace(" ", "") == "":
             flash('Поля не должны быть пустыми.')
             return redirect(url_for('auth.signup'))
+        
+        if len(name) > 30+1:
+            flash('Максимальная длина ника: 30 символов')
+            return redirect(url_for('auth.signup'))
+        elif len(password) > 50+1:
+            flash('Максимальная длина пароля: 50 символов')
+            return redirect(url_for('auth.signup'))
 
         user = User.query.filter_by(name=name).first()
 

@@ -2,7 +2,9 @@ from flask import Blueprint, render_template, redirect, url_for
 
 help = Blueprint('help', __name__)
 
-help_list = [["Правила сообщества", "help/rules.html", "0"], ["Меня забанили, что будет с аккаунтом?", "help/help_1.html", "1"]]
+help_list = [["Правила сообщества", "help/rules.html", "0"],
+             ["Меня забанили, что будет с аккаунтом?", "help/help_1.html", "1"],
+             ["Ограничения по кол-ву символов", "help/help_2.html", "2"]]
 
 @help.route('/help')
 def index():

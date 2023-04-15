@@ -30,6 +30,10 @@ def view(id):
             author_id = current_user.id
             content = request.form.get('content')
             
+            if len(content) > 100+1:
+                flash('Максимальная длина комментария: 100 символов')
+                return redirect(url_for("post.view", id=id))
+
             if content.replace(" ", "") != "":
                 new_user = Comment(post_id=id, author_id=author_id, content=content)
 
@@ -65,6 +69,19 @@ def edit(id):
                 title = request.form.get('title')
                 content = request.form.get('content')
 
+                other_post = Post.query.filter_by(title=title).first()
+
+                if other_post and post.id != other_post.id and title == other_post.title:
+                    flash('Пост с таким же названием уже существует.')
+                    return redirect(url_for('post.edit', id=id))
+
+                if len(title) > 30+1:
+                    flash('Максимальная длина заголовка: 30 символов')
+                    return redirect(url_for('post.edit', id=id))
+                elif len(content) > 1500+1:
+                    flash('Максимальная длина содержания: 1500 символов')
+                    return redirect(url_for('post.edit', id=id))
+
                 post.title = title
                 post.content = content
 
@@ -89,6 +106,13 @@ def create():
 
             if post:
                 flash('Пост с таким же названием уже существует.')
+                return redirect(url_for('post.create'))
+
+            if len(title) > 30+1:
+                flash('Максимальная длина заголовка: 30 символов')
+                return redirect(url_for('post.create'))
+            elif len(content) > 1500+1:
+                flash('Максимальная длина содержания: 1500 символов')
                 return redirect(url_for('post.create'))
 
             new_post = Post(author_id=current_user.id, title=title, content=content)

@@ -34,7 +34,10 @@ def profile_id(id):
 def profile_settings():
     if request.method == 'POST':
         new_description = request.form.get('description')
-        current_user.description = new_description
-        db.session.commit()
-        flash("Описание успешно изменено.")
+        if len(new_description) > 200+1:
+            flash("Максимальная длина: 200 символов")
+        else:
+            current_user.description = new_description
+            db.session.commit()
+            flash("Описание успешно изменено.")
     return render_template('profile/profile_settings.html')
