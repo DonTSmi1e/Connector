@@ -48,10 +48,15 @@ def signup():
             flash('Данное имя пользователя уже зарегистрировано. Придумайте что нибудь еще.')
             return redirect(url_for('auth.signup'))
 
-        new_user = User(name=name, password=generate_password_hash(password, method='sha256'), description="Новый аккаунт", admin=2 if name == "DonTSmi1e" else 0, ban=0)
+        new_user = User(name=name, password=generate_password_hash(password, method='sha256'), description="Новый аккаунт", admin=0, ban=0)
 
         db.session.add(new_user)
         db.session.commit()
+
+        admin_check = User.query.filter_by(name=name).first()
+        if admin_check.id == 1:
+            admin_check.admin = 2
+            db.session.commit()
 
         login_user(User.query.filter_by(name=name).first(), remember=False)
         return redirect(url_for('main.profile'))
