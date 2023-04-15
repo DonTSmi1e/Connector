@@ -59,6 +59,12 @@ def utils(id):
             elif user.ban == 0 and current_user.admin > user.admin:
                 user.ban = 1
             db.session.commit()
+        elif id == 9 and current_user.admin >= 1:
+            # Выдать уровень администратора **ПО ID**
+            user = User.query.filter_by(id=int(request.form.get("id"))).first()
+            if current_user.admin > user.admin or current_user.id == 1:
+                user.admin = int(request.form.get("admin"))
+            db.session.commit()
 
         return redirect(url_for('admin.index'))
     else:
