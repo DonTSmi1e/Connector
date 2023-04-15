@@ -51,6 +51,14 @@ def utils(id):
             # Удалить пост **ПО ID**
             Post.query.filter_by(id=int(request.form.get("id"))).delete()
             db.session.commit()
+        elif id == 8 and current_user.admin >= 1:
+            # Забанить аккаунт **ПО ID**
+            user = User.query.filter_by(id=int(request.form.get("id"))).first()
+            if user.ban == 1 and current_user.admin > user.admin:
+                user.ban = 0
+            elif user.ban == 0 and current_user.admin > user.admin:
+                user.ban = 1
+            db.session.commit()
 
         return redirect(url_for('admin.index'))
     else:

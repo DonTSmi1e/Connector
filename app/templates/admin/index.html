@@ -32,8 +32,11 @@
                     <input type="text" class="form-control" name="id">
                     <button type="submit" class="btn btn-danger">Удалить пост</button>
                 </form><br>
-
-
+                <form method="POST" action="{{ url_for('admin.utils', id=8) }}">
+                    <label class="form-label">ID аккаунта</label>
+                    <input type="text" class="form-control" name="id">
+                    <button type="submit" class="btn btn-warning">Забанить/разбанить</button>
+                </form><br>
             </div>
         </div>
     </div>

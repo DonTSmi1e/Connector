@@ -10,7 +10,7 @@
         </div>
     {% endif %}
     <div class="row">
-        <div class="col-3 text-center border rounded"><br>
+        <div class="col ms-3 me-3 mb-3 text-center border rounded"><br>
             <h3>Профиль</h3>
             <ul class="list-group">
                 <li class="list-group-item">{{ user.name }}</li>
@@ -28,20 +28,24 @@
                 {% if user.id == current_user.id %}
                     <li class="list-group-item">
                         <a href="{{ url_for('main.profile_settings') }}" class="btn border rounded" style="width: 100%;">Настройки</a>
-                        <hr>
-                        <a href="{{ url_for('post.create') }}" class="btn border rounded" style="width: 100%;">Создать пост</a>
+                        {% if user.ban != 1 %}
+                            <hr>
+                            <a href="{{ url_for('post.create') }}" class="btn border rounded" style="width: 100%;">Создать пост</a>
+                        {% endif %}
                     </li>
                 {% endif %}
             </ul>
             ID: {{ user.id }}
         <br></div>
-        <div class="col border rounded"><p>
+        <div class="col ms-3 me-3 mb-3 border rounded"><p>
             {% if user.ban == 1 %}
                 <center><strong>Описание недоступно</strong></center>
             {% elif user.admin == 2 %}
                 {{ user.description | safe }}
             {% else %}
-                {{ user.description }}
+                {% for line in user.description.split("\n") %}
+                    {{ line }}<br>
+                {% endfor %}
             {% endif %}
         </p></div>
     </div>
@@ -51,13 +55,13 @@
             Аккаунт забанен, публикации недоступны к просмотру.
         </div>
     {% else %}
-        <div class="row">
+        <div>
             {% for post in posts %}
-                <div class="card" style="width: 18rem;">
+                <div class="card mb-3">
                     <div class="card-body">
-                    <h5 class="card-title">{{ post["title"] }}</h5>
-                    <p class="card-text text-truncate">{{ post["content"] }}</p>
-                    <a href="{{ url_for('post.view', id=post['id']) }}" class="card-link">Читать</a>
+                        <h5 class="card-title">{{ post["title"] }}</h5>
+                        <p class="card-text text-truncate">{{ post["content"] }}</p>
+                        <a href="{{ url_for('post.view', id=post['id']) }}" class="card-link">Читать</a>
                     </div>
                 </div>
             {% endfor %}

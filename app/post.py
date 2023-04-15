@@ -48,7 +48,7 @@ def view(id):
                 for comment in post_comments:
                     comment_author = User.query.filter_by(id=comment.author_id).first()
                     if comment and comment_author.ban != 1:
-                        comments.append([comment_author.name, comment_author.admin, comment.content])
+                        comments.append([comment_author.name, comment_author.admin, comment.content, comment_author.id])
 
                 return render_template('post/view.html', post=post, user=post_author, comments=reversed(comments))
         else:

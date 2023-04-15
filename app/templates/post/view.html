@@ -5,7 +5,7 @@
 <div class="container">
     <br>
     <div class="row">
-        <div class="col-3 text-center border rounded"><br>
+        <div class="col ms-3 me-3 mb-3 text-center border rounded"><br>
             <h3>Автор</h3>
             <ul class="list-group">
                 <li class="list-group-item">{{ user.name }}</li>
@@ -22,7 +22,7 @@
             <br>
             <a class="btn" href="{{ url_for('main.profile') }}/{{ user.id }}">Перейти</a>
         <br></div>
-        <div class="col border rounded"><p>
+        <div class="col ms-3 me-3 mb-3 border rounded"><p>
             <h2>{{ post["title"] }}</h2>
             <h4>{{ post_author }}</h4>
             {% for line in post["content"].split("\n") %}
@@ -46,7 +46,7 @@
             {% endif %}
             <hr>
             {% for comment in comments %}
-                <strong>{{ comment[0] }}</strong>
+                <strong><a class="text-secondary" href="{{ url_for('main.profile_id', id=comment[3])}}">{{ comment[0] }}</a></strong>
                 {% if comment[1] == 0 %}
                     <span class="badge text-bg-secondary">Пользователь</span>
                 {% elif comment[1] == 1 %}
