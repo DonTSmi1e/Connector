@@ -13,13 +13,15 @@ post = Blueprint('post', __name__)
 def index():
     posts = []
     q_posts = Post.query.order_by(desc(Post.id)).all()
+    users = {}
     
     for post in q_posts:
         post_author = User.query.filter_by(id=post.author_id).first()
         if post and post_author.ban != 1:
+            users[int(post_author.id)] = post_author.name
             posts.append(post)
 
-    return render_template('post/list.html', posts=posts)
+    return render_template('post/list.html', posts=posts, users=users)
 
 @post.route('/post/<int:id>', methods=['GET', 'POST'])
 def view(id):

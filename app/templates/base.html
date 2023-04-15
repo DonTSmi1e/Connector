@@ -16,14 +16,17 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav navbar-nav-scroll">
                         <li class="nav-item">
-                            <a class="nav-link" href="/post">Посты</a>
+                            <a class="nav-link" href="{{ url_for('post.index') }}">Посты</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/help">Помощь</a>
+                            <a class="nav-link" href="{{ url_for('main.users') }}">Пользователи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('help.index') }}">Помощь</a>
                         </li>
                         {% if not current_user.is_anonymous %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ current_user.name }}
                                 </a>
                                 <ul class="dropdown-menu">
@@ -52,7 +55,7 @@
                     </ul>
                 </div>
                 <span class="navbar-text">
-                    Сборка 15.04.2022:1
+                    раз раз раз это хардбасс ...
                 </span>            
             </div>
         </nav>

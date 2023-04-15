@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <center><h2>Все пользователи</h2></center><hr>
+    <ul class="list-group">
+        {% for user in users %}
+            <li class="list-group-item">
+                <strong><a class="text-secondary" href="{{ url_for('main.profile_id', id=user['id'])}}">{{ user["name"] }}</a></strong>
+                {% if user["admin"] == 0 %}
+                    <span class="badge text-bg-secondary">Пользователь</span>
+                {% elif user["admin"] == 1 %}
+                    <span class="badge text-bg-primary">Модератор</span>
+                {% elif user["admin"] == 2 %}
+                    <span class="badge text-bg-danger">Администратор</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

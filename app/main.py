@@ -12,6 +12,10 @@ main = Blueprint('main', __name__)
 def index():
     return render_template('index.html')
 
+@main.route('/users')
+def users():
+    return render_template('users.html', users=User.query.order_by(desc(User.admin)).all())
+
 @main.route('/profile')
 @login_required
 def profile():
