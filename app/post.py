@@ -17,7 +17,7 @@ def index():
     
     for post in q_posts:
         post_author = User.query.filter_by(id=post.author_id).first()
-        if post and post_author.ban != 1:
+        if post and post_author and post_author.ban != 1:
             users[int(post_author.id)] = post_author.name
             posts.append(post)
 
@@ -55,6 +55,27 @@ def view(id):
                 return render_template('post/view.html', post=post, user=post_author, comments=reversed(comments))
         else:
             return render_template('error/not_found.html', message="Пост не найден.")
+
+@post.route('/post/<int:id>/edit', methods=['GET', 'POST'])
+def edit(id):
+    post = Post.query.filter_by(id=id).first()
+    if post:
+        if post.author_id == current_user.id:
+            if request.method == "POST":
+                title = request.form.get('title')
+                content = request.form.get('content')
+
+                post.title = title
+                post.content = content
+
+                db.session.commit()
+                return redirect(url_for("post.view", id=id))
+            else:
+                return render_template('post/edit.html', post=post)
+        else:
+            return redirect(url_for("post.view", id=id))
+    else:
+        return render_template('error/not_found.html', message="Пост не найден.")
 
 @post.route('/post/create', methods=['GET', 'POST'])
 @login_required

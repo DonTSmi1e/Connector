@@ -20,6 +20,13 @@
                 </li>
             </ul>
             <br>
+            {% if post["author_id"] == current_user.id %}
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="{{ url_for('post.edit', id=post['id']) }}" class="btn border rounded" style="width: 100%;">Изменить пост</a>
+                    </li>
+                </ul>
+            {% endif %}
             <a class="btn" href="{{ url_for('main.profile') }}/{{ user.id }}">Перейти</a>
         <br></div>
         <div class="col ms-3 me-3 mb-3 border rounded"><p>

@@ -9,7 +9,9 @@
         {% for user in users %}
             <li class="list-group-item">
                 <strong><a class="text-secondary" href="{{ url_for('main.profile_id', id=user['id'])}}">{{ user["name"] }}</a></strong>
-                {% if user["admin"] == 0 %}
+                {% if user.ban == 1 %}
+                    <span class="badge text-bg-warning">Забанен</span>
+                {% elif user["admin"] == 0 %}
                     <span class="badge text-bg-secondary">Пользователь</span>
                 {% elif user["admin"] == 1 %}
                     <span class="badge text-bg-primary">Модератор</span>

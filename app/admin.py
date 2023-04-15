@@ -21,7 +21,7 @@ def index():
 @admin.route('/admin/utils/<int:id>', methods=['POST'])
 @login_required
 def utils(id):
-    if request.method == "POST":
+    if request.method == "POST" and current_user.ban != 1:
         if id == 1 and current_user.admin >= 1:
             # Очистить недоступные публикации
             comments = Comment.query.all()
@@ -36,6 +36,10 @@ def utils(id):
         if id == 3 and current_user.admin >= 2:
             # Очистить все комментарии
             Comment.query.delete()
+            db.session.commit()
+        elif id == 4 and current_user.admin >= 2:
+            # Удалить все забаненные аккаунты
+            User.query.filter_by(ban=1).delete()
             db.session.commit()
         elif id == 5 and current_user.admin >= 2:
             # Разбанить все аккаунты
