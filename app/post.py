@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 
@@ -10,6 +10,7 @@ from .models import Comment
 from . import db
 
 post = Blueprint('post', __name__)
+notification = ""
 
 @post.route('/post')
 def index():
@@ -25,8 +26,13 @@ def index():
 
     return render_template('post/list.html', posts=posts, users=users)
 
+@post.route('/post/notification')
+def notifications():
+    return notification
+
 @post.route('/post/<int:id>', methods=['GET', 'POST'])
 def view(id):
+    global notification
     post = Post.query.filter_by(id=id).first()
     if post:
         if request.method == "POST":
@@ -50,6 +56,8 @@ def view(id):
                     db.session.add(new_user)
                     db.session.commit()
 
+                    notification = f"<a href='{url_for('post.view', id=id)}'><strong>{current_user.name}</strong>: {content}</a>"
+
             return redirect(url_for("post.view", id=id))
         else:
             post_author = User.query.filter_by(id=post.author_id).first()
@@ -69,6 +77,7 @@ def view(id):
 
 @post.route('/post/<int:id>/edit', methods=['GET', 'POST'])
 def edit(id):
+    global notification
     post = Post.query.filter_by(id=id).first()
     if post:
         if post.author_id == current_user.id:
@@ -98,6 +107,7 @@ def edit(id):
                 post.active = datetime.datetime.now()
 
                 db.session.commit()
+                notification = f"<a href='{url_for('post.view', id=id)}'><strong>{current_user.name}</strong> изменил свой пост.</a>"
                 return redirect(url_for("post.view", id=id))
             else:
                 return render_template('post/edit.html', post=post, title=request.args.get('title'), content=request.args.get('content'))
@@ -109,6 +119,7 @@ def edit(id):
 @post.route('/post/create', methods=['GET', 'POST'])
 @login_required
 def create():
+    global notification
     if request.method == 'POST':
         if current_user.ban != 1:
             title = request.form.get('title')
@@ -135,6 +146,8 @@ def create():
 
             db.session.add(new_post)
             db.session.commit()
+
+            notification = f"<a href='{url_for('post.view', id=Post.query.filter_by(title=title).first().id)}'><strong>{current_user.name}</strong> создал новый пост.</a>"
 
             return redirect(url_for('main.profile'))
         else:
