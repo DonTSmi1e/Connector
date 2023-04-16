@@ -10,7 +10,7 @@ from .models import Comment
 from . import db
 
 post = Blueprint('post', __name__)
-notification = ""
+notification = "Добро пожаловать на наш форум!"
 
 @post.route('/post')
 def index():
