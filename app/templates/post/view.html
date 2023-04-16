@@ -60,7 +60,7 @@
             {% if current_user.ban != 1 and not current_user.is_anonymous %}
                 <form method="POST">
                     <div class="mb-3">
-                        <input type="text" required class="form-control" name="content" value="{{ content if content else post['content'] }}"><br>
+                        <input type="text" required class="form-control" name="content" value="{{ content if content else '' }}"><br>
                         <button type="submit" class="btn btn-primary">Отправить</button>
                     </div>
                 </form>
