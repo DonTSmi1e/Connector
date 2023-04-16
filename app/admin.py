@@ -11,7 +11,7 @@ admin = Blueprint('admin', __name__)
 @admin.route('/admin')
 @login_required
 def index():
-    if current_user.admin == 2:
+    if current_user.admin >= 2:
         return render_template('admin/index.html')
     elif current_user.admin == 1:
         return render_template('admin/index_moderator.html')
@@ -54,20 +54,28 @@ def utils(id):
         elif id == 7 and current_user.admin >= 1:
             # Удалить пост **ПО ID**
             Post.query.filter_by(id=int(request.form.get("id"))).delete()
+            Comment.query.filter_by(post_id=int(request.form.get("id"))).delete()
             db.session.commit()
         elif id == 8 and current_user.admin >= 1:
             # Забанить аккаунт **ПО ID**
             user = User.query.filter_by(id=int(request.form.get("id"))).first()
-            if user.ban == 1 and current_user.admin > user.admin:
+            if user and user.ban == 1 and current_user.admin > user.admin:
                 user.ban = 0
-            elif user.ban == 0 and current_user.admin > user.admin:
+            elif user and user.ban == 0 and current_user.admin > user.admin:
                 user.ban = 1
             db.session.commit()
         elif id == 9 and current_user.admin >= 1:
             # Выдать уровень администратора **ПО ID**
             user = User.query.filter_by(id=int(request.form.get("id"))).first()
-            if current_user.admin > user.admin or current_user.id == 1:
+            if user and current_user.admin > user.admin and int(request.form.get("admin")) in [0, 1, 2]:
                 user.admin = int(request.form.get("admin"))
+            db.session.commit()
+        elif id == 10 and current_user.admin >= 3:
+            # Передать права владельца **ПО ID**
+            user = User.query.filter_by(id=int(request.form.get("id"))).first()
+            if user and current_user.admin >= 3:
+                current_user.admin = 2
+                user.admin = 3
             db.session.commit()
 
         return redirect(url_for('admin.index'))

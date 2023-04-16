@@ -7,10 +7,10 @@
     <center><h5>Активные публикации</h5></center>
     <div>
         {% for post in posts %}
-            <div class="card mb-3 {% if post['author_id'] == 1 %} border border-primary {% endif %}">
+            <div class="card mb-3 {% if users[post['author_id']][1] >= 3 %} border border-primary {% endif %}">
                 <div class="card-body">
                     <h5 class="card-title">{{ post["title"] }}</h5>
-                    <a href="{{ url_for('main.profile_id', id=post['author_id']) }}"><h6 class="card-subtitle mb-2 text-body-secondary">{{ users[post["author_id"]] }}</h6></a>
+                    <a href="{{ url_for('main.profile_id', id=post['author_id']) }}"><h6 class="card-subtitle mb-2 text-body-secondary">{{ users[post["author_id"]][0] }}</h6></a>
                     <p class="card-text text-truncate">{{ post["content"] }}</p>
                     <a href="/post/{{ post['id'] }}" class="card-link">Читать</a>
                 </div>

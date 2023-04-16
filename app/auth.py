@@ -55,7 +55,7 @@ def signup():
 
         admin_check = User.query.filter_by(name=name).first()
         if admin_check.id == 1:
-            admin_check.admin = 2
+            admin_check.admin = 3
             db.session.commit()
 
         login_user(User.query.filter_by(name=name).first(), remember=False)

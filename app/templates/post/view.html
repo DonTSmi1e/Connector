@@ -23,6 +23,8 @@
                         <span class="badge text-bg-primary">Модератор</span>
                     {% elif user.admin == 2 %}
                         <span class="badge text-bg-danger">Администратор</span>
+                    {% elif user.admin == 3 %}
+                        <span class="badge text-bg-info">Владелец</span>
                     {% endif %}
                 </li>
             </ul>
@@ -76,6 +78,8 @@
                     <span class="badge text-bg-primary">Модератор</span>
                 {% elif comment[1] == 2 %}
                     <span class="badge text-bg-danger">Администратор</span>
+                {% elif comment[1] == 3 %}
+                    <span class="badge text-bg-info">Владелец</span>
                 {% endif %}
                 {{ comment[2] }}
                 <br>

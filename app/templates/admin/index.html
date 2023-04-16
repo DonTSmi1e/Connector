@@ -44,6 +44,18 @@
                     <input type="text" class="form-control" name="admin">
                     <button type="submit" class="btn btn-primary">Выдать уровень администратора</button>
                 </form><br>
+
+                {% if current_user.admin >= 3 %}
+                    <br><h4 class="text-danger">Опасная зона</h4><hr>
+                    <div class="alert alert-danger">
+                        Имейте ввиду, данное действие необратимо.
+                    </div>
+                    <form method="POST" action="{{ url_for('admin.utils', id=10,) }}">
+                        <label class="form-label">ID аккаунта</label>
+                        <input type="text" class="form-control" name="id">
+                        <button type="submit" class="btn btn-danger">Передать права владельца</button>
+                    </form><br>
+                {% endif %}
             </div>
         </div>
     </div>
