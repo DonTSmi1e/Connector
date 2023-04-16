@@ -49,15 +49,15 @@ def view(id):
         else:
             post_author = User.query.filter_by(id=post.author_id).first()
 
-            if post_author.ban == 1:
+            if post_author.ban == 1 and current_user.admin < 1:
                 return redirect(url_for("main.profile") + "/" + str(post_author.id))
             else:
                 post_comments = Comment.query.filter_by(post_id=post.id)
                 comments = []
                 for comment in post_comments:
                     comment_author = User.query.filter_by(id=comment.author_id).first()
-                    if comment and comment_author.ban != 1:
-                        comments.append([comment_author.name, comment_author.admin, comment.content, comment_author.id])
+                    if comment and comment_author.ban != 1 or current_user.admin > 0:
+                        comments.append([comment_author.name, comment_author.admin, comment.content, comment_author.id, comment_author.ban])
                 return render_template('post/view.html', post=post, user=post_author, comments=reversed(comments))
     else:
         return render_template('error/not_found.html', message="Пост не найден.")

@@ -13,6 +13,11 @@
                 </form><br>
 
                 <br><h4>Управление БД</h4><hr>
+                <form method="POST" action="{{ url_for('admin.utils', id=7) }}">
+                    <label class="form-label">ID поста</label>
+                    <input type="text" class="form-control" name="id">
+                    <button type="submit" class="btn btn-danger">Удалить пост</button>
+                </form><br>
                 <form method="POST" action="{{ url_for('admin.utils', id=8) }}">
                     <label class="form-label">ID аккаунта</label>
                     <input type="text" class="form-control" name="id">

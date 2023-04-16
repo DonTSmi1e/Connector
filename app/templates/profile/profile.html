@@ -6,7 +6,12 @@
     <br>
     {% if user.ban == 1 and user.id == current_user.id %}
         <div class="alert alert-warning">
-            Вы были забанены за нарушение правил сообщества. <a href="/help/0" class="alert-link">Что будет с моим аккаунтом?</a>
+            Вы были забанены за нарушение правил сообщества. <a href="/help/1" class="alert-link">Что будет с моим аккаунтом?</a>
+        </div>
+    {% endif %}
+    {% if user.ban == 1 and current_user.admin > 0 %}
+        <div class="alert alert-primary">
+            Вы просматриваете этот профиль от имени администратора
         </div>
     {% endif %}
     <div class="row">
@@ -38,9 +43,9 @@
             ID: {{ user.id }}
         <br></div>
         <div class="col ms-3 me-3 mb-3 border rounded"><p>
-            {% if user.ban == 1 %}
+            {% if user.ban == 1 and current_user.admin < 1 %}
                 <center><strong>Описание недоступно</strong></center>
-            {% elif user.admin == 2 %}
+            {% elif user.admin == 2 and user.ban != 1 %}
                 {{ user.description | safe }}
             {% else %}
                 {% for line in user.description.split("\n") %}
@@ -50,7 +55,7 @@
         </p></div>
     </div>
     <br>
-    {% if user.ban == 1 %}
+    {% if user.ban == 1 and current_user.admin < 1 %}
         <div class="alert alert-warning">
             Аккаунт забанен, публикации недоступны к просмотру.
         </div>

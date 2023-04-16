@@ -51,7 +51,7 @@ def utils(id):
             # Удалить аккаунт **ПО ID**
             User.query.filter_by(id=int(request.form.get("id"))).delete()
             db.session.commit()
-        elif id == 7 and current_user.admin >= 2:
+        elif id == 7 and current_user.admin >= 1:
             # Удалить пост **ПО ID**
             Post.query.filter_by(id=int(request.form.get("id"))).delete()
             db.session.commit()

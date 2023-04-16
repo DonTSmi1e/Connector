@@ -4,13 +4,20 @@
 
 <div class="container">
     <br>
+    {% if user.ban == 1 and current_user.admin > 0 %}
+        <div class="alert alert-primary">
+            Вы просматриваете этот пост от имени администратора
+        </div>
+    {% endif %}
     <div class="row">
         <div class="col ms-3 me-3 mb-3 text-center border rounded"><br>
             <h3>Автор</h3>
             <ul class="list-group">
                 <li class="list-group-item">{{ user.name }}</li>
                 <li class="list-group-item">
-                    {% if user.admin == 0 %}
+                    {% if user.ban == 1 %}
+                        <span class="badge text-bg-warning">Забанен</span>
+                    {% elif user.admin == 0 %}
                         <span class="badge text-bg-secondary">Пользователь</span>
                     {% elif user.admin == 1 %}
                         <span class="badge text-bg-primary">Модератор</span>
@@ -61,7 +68,9 @@
             <hr>
             {% for comment in comments %}
                 <strong><a class="text-secondary" href="{{ url_for('main.profile_id', id=comment[3])}}">{{ comment[0] }}</a></strong>
-                {% if comment[1] == 0 %}
+                {% if comment[4] == 1 %}
+                    <span class="badge text-bg-warning">Забанен</span>
+                {% elif comment[1] == 0 %}
                     <span class="badge text-bg-secondary">Пользователь</span>
                 {% elif comment[1] == 1 %}
                     <span class="badge text-bg-primary">Модератор</span>

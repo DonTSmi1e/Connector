@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <link href="/static/css/main.css" rel="stylesheet">
+        <link rel="shortcut icon" href="/static/img/logo.png" type="image/x-icon">
         <title>Connector</title>
     </head>
     <body>
@@ -31,10 +32,7 @@
                                     {{ current_user.name }}
                                 </a>
                                 <ul class="dropdown-menu">
-                                    {% if current_user.ban == 1 %}
-                                        <li class="dropdown-item text-warning">Аккаунт заблокирован</li>
-                                    {% endif %}
-                                    <li><a class="dropdown-item" href="{{ url_for('main.profile') }}">Профиль</a></li>
+                                    <li><a class="dropdown-item {% if current_user.ban == 1 %} text-warning {% endif %}" href="{{ url_for('main.profile') }}">Профиль</a></li>
                                     {% if current_user.admin >= 1 %}
                                         <li><a class="dropdown-item" href="{{ url_for('admin.index') }}">Панель администратора</a></li>
                                     {% endif %}
@@ -56,7 +54,7 @@
                     </ul>
                 </div>
                 <span class="navbar-text">
-                    раз раз раз это хардбасс ...
+                    <a href="https://github.com/DonTSmi1e/Connector">Github</a>
                 </span>            
             </div>
         </nav>
