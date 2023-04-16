@@ -14,6 +14,7 @@ class Post(db.Model):
     author_id = db.Column(db.Integer)
     title = db.Column(db.String(30))
     content = db.Column(db.String(1500))
+    active = db.Column(db.DateTime)
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
