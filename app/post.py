@@ -14,7 +14,7 @@ post = Blueprint('post', __name__)
 @post.route('/post')
 def index():
     posts = []
-    q_posts = Post.query.order_by(desc(Post.active)).all()
+    q_posts = Post.query.order_by(desc(Post.active)).order_by(desc(Post.id)).all()
     users = {}
     
     for post in q_posts:
