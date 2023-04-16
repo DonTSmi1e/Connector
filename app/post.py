@@ -34,9 +34,14 @@ def view(id):
                 author_id = current_user.id
                 content = request.form.get('content')
                 
+                if content.replace(" ", "") == "":
+                    flash('Сообщение не может быть пустым')
+                    return redirect(url_for('post.view', id=id))
+
+
                 if len(content) > 100+1:
                     flash('Максимальная длина комментария: 100 символов')
-                    return redirect(url_for("post.view", id=id))
+                    return redirect(url_for("post.view", id=id) + f"?content={content}")
 
                 if content.replace(" ", "") != "":
                     new_user = Comment(post_id=id, author_id=author_id, content=content)
@@ -58,7 +63,7 @@ def view(id):
                     comment_author = User.query.filter_by(id=comment.author_id).first()
                     if comment and comment_author.ban != 1 or current_user.admin > 0:
                         comments.append([comment_author.name, comment_author.admin, comment.content, comment_author.id, comment_author.ban])
-                return render_template('post/view.html', post=post, user=post_author, comments=reversed(comments))
+                return render_template('post/view.html', post=post, user=post_author, comments=reversed(comments), content=request.args.get('content'))
     else:
         return render_template('error/not_found.html', message="Пост не найден.")
 
@@ -75,14 +80,18 @@ def edit(id):
 
                 if other_post and post.id != other_post.id and title == other_post.title:
                     flash('Пост с таким же названием уже существует.')
-                    return redirect(url_for('post.edit', id=id))
+                    return redirect(url_for('post.edit', id=id) + f"?title={title}&content={content}")
+
+                if title.replace(" ", "") == "" or content.replace(" ", "") == "":
+                    flash('Заголовок и содержание не могут быть пустыми')
+                    return redirect(url_for('post.edit', id=id) + f"?title={title}&content={content}")
 
                 if len(title) > 30+1:
                     flash('Максимальная длина заголовка: 30 символов')
-                    return redirect(url_for('post.edit', id=id))
+                    return redirect(url_for('post.edit', id=id) + f"?title={title}&content={content}")
                 elif len(content) > 1500+1:
                     flash('Максимальная длина содержания: 1500 символов')
-                    return redirect(url_for('post.edit', id=id))
+                    return redirect(url_for('post.edit', id=id) + f"?title={title}&content={content}")
 
                 post.title = title
                 post.content = content
@@ -91,7 +100,7 @@ def edit(id):
                 db.session.commit()
                 return redirect(url_for("post.view", id=id))
             else:
-                return render_template('post/edit.html', post=post)
+                return render_template('post/edit.html', post=post, title=request.args.get('title'), content=request.args.get('content'))
         else:
             return redirect(url_for("post.view", id=id))
     else:
@@ -107,16 +116,20 @@ def create():
 
             post = Post.query.filter_by(title=title).first()
 
+            if title.replace(" ", "") == "" or content.replace(" ", "") == "":
+                flash('Заголовок и содержание не могут быть пустыми')
+                return redirect(url_for('post.create', id=id) + f"?title={title}&content={content}")
+
             if post:
                 flash('Пост с таким же названием уже существует.')
-                return redirect(url_for('post.create'))
+                return redirect(url_for('post.create')) + f"?title={title}&content={content}"
 
             if len(title) > 30+1:
                 flash('Максимальная длина заголовка: 30 символов')
-                return redirect(url_for('post.create'))
+                return redirect(url_for('post.create') + f"?title={title}&content={content}")
             elif len(content) > 1500+1:
                 flash('Максимальная длина содержания: 1500 символов')
-                return redirect(url_for('post.create'))
+                return redirect(url_for('post.create') + f"?title={title}&content={content}")
 
             new_post = Post(author_id=current_user.id, title=title, content=content, active=datetime.datetime.now())
 
@@ -128,4 +141,4 @@ def create():
             flash('Ваш аккаунт заблокирован, вы не можете создавать публикации.')
             return redirect(url_for('post.create'))
     else:
-        return render_template('post/create.html')
+        return render_template('post/create.html', title=request.args.get('title'), content=request.args.get('content'))
