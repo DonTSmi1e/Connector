@@ -56,7 +56,8 @@ def view(id):
                     db.session.add(new_user)
                     db.session.commit()
 
-                    notification = f"<a href='{url_for('post.view', id=id)}'><strong>{current_user.name}</strong>: {content}</a>"
+                    if User.query.filter_by(id=post.author_id).first().ban != 1:
+                        notification = f"<a href='{url_for('post.view', id=id)}'><strong>{current_user.name}</strong>: {content}</a>"
 
             return redirect(url_for("post.view", id=id))
         else:
