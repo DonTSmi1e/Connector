@@ -46,7 +46,9 @@
             {% if user.ban == 1 and current_user.admin < 1 %}
                 <center><strong>Описание недоступно</strong></center>
             {% elif user.admin == 2 and user.ban != 1 %}
-                {{ user.description | safe }}
+                {% for line in user.description.split("\n") %}
+                    {{ line | safe }}<br>
+                {% endfor %}
             {% else %}
                 {% for line in user.description.split("\n") %}
                     {{ line }}<br>
