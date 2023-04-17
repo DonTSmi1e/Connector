@@ -7,8 +7,18 @@
         <h1 class="title">
             Connector
         </h1>
-        <h2 class="subtitle">
-            В разработке.
-        </h2>
+        <hr>
+        <p style="font-size: 20px">
+            Цели у данного проекта - нет. Это просто небольшой форум, где человек может рассказать/спросить что угодно и как угодно.
+            Правил по теме <strong>нет</strong>: Расскажите о любой ситуации, о которой вы в силе рассказать, или поведуйте о своем личном проекте.
+            Каждый активный аккаунт и каждый активный пост - для нас на вес золота.
+        </p>
+        {% if current_user.is_anonymous %}
+            <h4><a href="{{ url_for('auth.login') }}">Авторизация</a> / <a href="{{ url_for('auth.signup') }}">Регистрация</a></h4>
+        {% else %}
+            <h4><a href="{{ url_for('main.profile') }}">Что нового?</a></h4>
+        {% endif %}
+        <img src="https://media.tenor.com/VeZkc8XyAAcAAAAd/pog-kurisu.gif" width="30%">
     </div>
+    <br>
 {% endblock %}

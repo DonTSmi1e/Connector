@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 
@@ -19,7 +19,7 @@ def users():
 @main.route('/profile')
 @login_required
 def profile():
-    return render_template('profile/profile.html', user=current_user, posts=Post.query.order_by(desc(Post.id)).filter_by(author_id=current_user.id))
+    return redirect(url_for("main.profile_id", id=current_user.id))
 
 @main.route('/profile/<int:id>')
 def profile_id(id):
