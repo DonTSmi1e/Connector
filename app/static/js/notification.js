@@ -9,12 +9,12 @@ function notificationGet() {
         method: 'GET',
         async: true,
         success: function(data) {
-            if (localStorage['lastMessage'] != data) {
-                localStorage['lastMessage'] = data;
+            if (localStorage['lastMessage'] != data["id"]) {
+                localStorage['lastMessage'] = data["id"];
                 bs5Utils.Toast.show({
                     type: 'primary',
-                    title: "Последняя активность",
-                    content: data,
+                    title: data["title"],
+                    content: data["content"],
                     delay: 0,
                     dismissible: true
                 });

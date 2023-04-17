@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 
+import secrets
 import datetime
 
 from .models import User
@@ -10,7 +11,11 @@ from .models import Comment
 from . import db
 
 post = Blueprint('post', __name__)
-notification = "Добро пожаловать на наш форум!"
+notification = {
+    "id": secrets.token_urlsafe(),
+    "title": "Добро пожаловать!",
+    "content": "Сервер был перезапущен",
+}
 
 @post.route('/post')
 def index():
@@ -57,7 +62,7 @@ def view(id):
                     db.session.commit()
 
                     if User.query.filter_by(id=post.author_id).first().ban != 1:
-                        notification = f"<a href='{url_for('post.view', id=id)}'><strong>{current_user.name}</strong>: {content}</a>"
+                        notification = jsonify(id=secrets.token_urlsafe(), title=f"<a href='{url_for('post.view', id=id)}'>{post.title}</a>", content=f"<strong>{current_user.name}</strong>: {content}")
 
             return redirect(url_for("post.view", id=id))
         else:
@@ -96,8 +101,8 @@ def edit(id):
                     flash('Заголовок и содержание не могут быть пустыми')
                     return redirect(url_for('post.edit', id=id) + f"?title={title}&content={content}")
 
-                if len(title) > 30+1:
-                    flash('Максимальная длина заголовка: 30 символов')
+                if len(title) > 100+1:
+                    flash('Максимальная длина заголовка: 100 символов')
                     return redirect(url_for('post.edit', id=id) + f"?title={title}&content={content}")
                 elif len(content) > 1500+1:
                     flash('Максимальная длина содержания: 1500 символов')
@@ -108,7 +113,8 @@ def edit(id):
                 post.active = datetime.datetime.now()
 
                 db.session.commit()
-                notification = f"<a href='{url_for('post.view', id=id)}'><strong>{current_user.name}</strong> изменил свой пост.</a>"
+
+                notification = jsonify(id=secrets.token_urlsafe(), title=f"<a href='{url_for('post.view', id=id)}'>{post.title}</a>", content=f"<strong>{current_user.name}</strong> изменил свой пост.")
                 return redirect(url_for("post.view", id=id))
             else:
                 return render_template('post/edit.html', post=post, title=request.args.get('title'), content=request.args.get('content'))
@@ -136,8 +142,8 @@ def create():
                 flash('Пост с таким же названием уже существует.')
                 return redirect(url_for('post.create')) + f"?title={title}&content={content}"
 
-            if len(title) > 30+1:
-                flash('Максимальная длина заголовка: 30 символов')
+            if len(title) > 100+1:
+                flash('Максимальная длина заголовка: 100 символов')
                 return redirect(url_for('post.create') + f"?title={title}&content={content}")
             elif len(content) > 1500+1:
                 flash('Максимальная длина содержания: 1500 символов')
@@ -148,7 +154,7 @@ def create():
             db.session.add(new_post)
             db.session.commit()
 
-            notification = f"<a href='{url_for('post.view', id=Post.query.filter_by(title=title).first().id)}'><strong>{current_user.name}</strong> создал новый пост.</a>"
+            notification = jsonify(id=secrets.token_urlsafe(), title=f"<a href='{url_for('post.view', id=Post.query.filter_by(title=title).first().id)}'>{title}</a>", content=f"<strong>{current_user.name}</strong> создал новый пост.")
 
             return redirect(url_for('main.profile'))
         else:
