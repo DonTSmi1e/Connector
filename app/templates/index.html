@@ -16,7 +16,7 @@
         {% if current_user.is_anonymous %}
             <h4><a href="{{ url_for('auth.login') }}">Авторизация</a> / <a href="{{ url_for('auth.signup') }}">Регистрация</a></h4>
         {% else %}
-            <h4><a href="{{ url_for('main.profile') }}">Что нового?</a></h4>
+            <h4><a href="{{ url_for('post.index') }}">Что нового?</a></h4>
         {% endif %}
         <img src="https://media.tenor.com/VeZkc8XyAAcAAAAd/pog-kurisu.gif" width="30%">
     </div>
