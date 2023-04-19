@@ -4,11 +4,6 @@
 
 <div class="container">
     <br>
-    {% if user.ban == 1 and current_user.admin > 0 %}
-        <div class="alert alert-primary">
-            Вы просматриваете этот профиль от имени администратора
-        </div>
-    {% endif %}
     <div class="row">
         <div class="col ms-3 me-3 mb-3 text-center border rounded"><br>
             <h3>Профиль</h3>
@@ -27,7 +22,7 @@
                         <span class="badge text-bg-info">Владелец</span>
                     {% endif %}
                 </li>
-                {% if user.id == current_user.id %}
+                {% if not current_user.is_anonymous and user.id == current_user.id %}
                     <li class="list-group-item">
                         <a href="{{ url_for('main.profile_settings') }}" class="btn border rounded" style="width: 100%;">Настройки</a>
                         {% if user.ban != 1 %}
@@ -38,11 +33,9 @@
                 {% endif %}
             </ul>
             ID: {{ user.id }}
-        <br></div>
+        </div>
         <div class="col ms-3 me-3 mb-3 border rounded"><p>
-            {% if user.ban == 1 and current_user.admin < 1 %}
-                <center><strong>Описание недоступно</strong></center>
-            {% elif user.admin >= 2 and user.ban != 1 %}
+            {% if user.admin >= 2 and user.ban != 1 %}
                 {% for line in user.description.split("\n") %}
                     {{ line | safe }}<br>
                 {% endfor %}
@@ -54,25 +47,21 @@
         </p></div>
     </div>
     <br>
-    {% if not current_user.is_anonymous %}
-        {% if user.ban == 1 and current_user.admin < 1 %}
-            <div class="alert alert-warning">
-                Аккаунт забанен, публикации недоступны к просмотру.
-            </div>
-        {% else %}
-            <div>
-                {% for post in posts %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ post["title"] }}</h5>
-                            <p class="card-text text-truncate">{{ post["content"] }}</p>
-                            <a href="{{ url_for('post.view', id=post['id']) }}" class="card-link">Читать</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endif %}
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+        <h6 class="border-bottom pb-2 mb-0">Активные публикации</h6>
+        {% for post in posts %}
+        <div class="d-flex text-body-secondary pt-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle flex-shrink-0 me-2" viewBox="0 0 16 16" dy=".3em">
+                <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-5-.5H7a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1 0-1zm0 3h7a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"/>
+                <title>{{ user.name }}</title>
+            </svg>
+            <p class="pb-3 mb-0 small lh-sm border-bottom text-truncate">
+                <strong class="d-block text-gray-dark"><a href="/post/{{ post['id'] }}">{{ post["title"] }}</a></strong>
+                {{ post["content"] }}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

@@ -1,28 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="container">
-    <br>
-    <center><h2>Все пользователи</h2></center><hr>
-    <ul class="list-group">
-        {% for user in users %}
-            <li class="list-group-item">
-                <strong><a class="text-secondary" href="{{ url_for('main.profile_id', id=user['id'])}}">{{ user["name"] }}</a></strong>
-                {% if user.ban == 1 %}
-                    <span class="badge text-bg-warning">Забанен</span>
-                {% elif user["admin"] == 0 %}
-                    <span class="badge text-bg-secondary">Пользователь</span>
-                {% elif user["admin"] == 1 %}
-                    <span class="badge text-bg-primary">Модератор</span>
-                {% elif user["admin"] == 2 %}
-                    <span class="badge text-bg-danger">Администратор</span>
-                {% elif user["admin"] == 3 %}
-                    <span class="badge text-bg-info">Владелец</span>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-
+    <div class="container">
+        <br><center><h2>Все пользователи</h2></center>
+        <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
+            <div class="list-group">
+                {% for user in users %}
+                    <a href="{{ url_for('main.profile_id', id=user['id'])}}" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                        <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-0">
+                                    {{ user["name"] }}
+                                    {% if user.ban == 1 %}
+                                        <span class="badge text-bg-warning">Забанен</span>
+                                    {% elif user["admin"] == 0 %}
+                                        <span class="badge text-bg-secondary">Пользователь</span>
+                                    {% elif user["admin"] == 1 %}
+                                        <span class="badge text-bg-primary">Модератор</span>
+                                    {% elif user["admin"] == 2 %}
+                                        <span class="badge text-bg-danger">Администратор</span>
+                                    {% elif user["admin"] == 3 %}
+                                        <span class="badge text-bg-info">Владелец</span>
+                                    {% endif %}
+                                </h6>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

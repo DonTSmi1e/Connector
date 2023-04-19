@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container-fluid text-center">
+    <div class="px-4 py-5 my-5 text-center">
+        <img src="https://media.tenor.com/VeZkc8XyAAcAAAAd/pog-kurisu.gif" width="10%">
+        <h1 class="display-5 fw-bold text-body-emphasis">Connector</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">
+                Цели у данного проекта - нет. Это просто небольшой форум, где человек может рассказать/спросить что угодно и как угодно.
+                Расскажите о любой ситуации, о которой вы в силе рассказать, или поведуйте о своем личном проекте.
+                Каждый активный аккаунт и каждый активный пост - для нас на вес золота.
+            </p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                {% if current_user.is_anonymous %}
+                    <button type="button" class="btn btn-primary btn-lg px-4 gap-3" data-bs-toggle="modal" data-bs-target="#loginModal">Вход</button></li>
+                    <button type="button" class="btn btn-primary btn-lg px-4 gap-3" data-bs-toggle="modal" data-bs-target="#signupModal">Регистрация</button></li>
+                {% else %}
+                    <a class="btn btn-primary btn-lg px-4 gap-3" href="{{ url_for('post.index') }}">Перейти в список постов</a>
+                {% endif %}
+            </div>
+        </div>
         <br>
-        <img src="/static/img/logo.png" style="width: 10%;">
-        <h1 class="title">
-            Connector
-        </h1>
-        <hr>
-        <p style="font-size: 20px">
-            Цели у данного проекта - нет. Это просто небольшой форум, где человек может рассказать/спросить что угодно и как угодно.
-            Правил по теме <strong>нет</strong>: Расскажите о любой ситуации, о которой вы в силе рассказать, или поведуйте о своем личном проекте.
-            Каждый активный аккаунт и каждый активный пост - для нас на вес золота.
-        </p>
-        {% if current_user.is_anonymous %}
-            <h4><a href="{{ url_for('auth.login') }}">Авторизация</a> / <a href="{{ url_for('auth.signup') }}">Регистрация</a></h4>
-        {% else %}
-            <h4><a href="{{ url_for('post.index') }}">Что нового?</a></h4>
-        {% endif %}
-        <img src="https://media.tenor.com/VeZkc8XyAAcAAAAd/pog-kurisu.gif" width="30%">
     </div>
-    <br>
 {% endblock %}

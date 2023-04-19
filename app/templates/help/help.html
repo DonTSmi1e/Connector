@@ -3,7 +3,7 @@
 {% block content %}
 
 <br>
-<div class="container-fluid">
+<div class="container-fluid bg-dark rounded" style="width: 90%; padding: 5%;">
     <center><h2>Центр помощи</h2></center><hr>
     {% for help in help_list %}
         <a href="/help/{{ help[2] }}"><h4>{{ help[0] }}</h4></a>

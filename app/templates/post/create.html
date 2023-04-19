@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="column is-4 is-offset-4">
+    <br>
+    <div class="column is-4 is-offset-4 container-fluid bg-dark rounded" style="width: 90%; padding: 1%;">
         <div class="box">
             <br>
             <div class="container">
@@ -15,11 +16,11 @@
                 <form method="POST">
                     <div class="mb-3">
                         <label class="form-label">Заголовок:</label>
-                        <input type="text" class="form-control" name="title" value="{{ title if title else '' }}">
+                        <input type="text" class="form-control" name="title" value="{{ title if title else '' }}" autocomplete="off">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Содержание:</label>
-                        <textarea class="form-control" name="content" rows="20">{{ content if content else '' }}</textarea>
+                        <textarea class="form-control" name="content" rows="18" autocomplete="off">{{ content if content else '' }}</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Создать</button>
                 </form>

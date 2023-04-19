@@ -1,92 +1,90 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="container">
-    <br>
-    {% if user.ban == 1 and current_user.admin > 0 %}
-        <div class="alert alert-primary">
-            Вы просматриваете этот пост от имени администратора
-        </div>
-    {% endif %}
-    <div class="row">
-        <div class="col ms-3 me-3 mb-3 text-center border rounded"><br>
-            <h3>Автор</h3>
-            <ul class="list-group">
-                <li class="list-group-item">{{ user.name }}</li>
-                <li class="list-group-item">
-                    {% if user.ban == 1 %}
-                        <span class="badge text-bg-warning">Забанен</span>
-                    {% elif user.admin == 0 %}
-                        <span class="badge text-bg-secondary">Пользователь</span>
-                    {% elif user.admin == 1 %}
-                        <span class="badge text-bg-primary">Модератор</span>
-                    {% elif user.admin == 2 %}
-                        <span class="badge text-bg-danger">Администратор</span>
-                    {% elif user.admin == 3 %}
-                        <span class="badge text-bg-info">Владелец</span>
-                    {% endif %}
-                </li>
-            </ul>
-            <br>
-            {% if post["author_id"] == current_user.id %}
+    <div class="container">
+        <br>
+        {% if user.ban == 1 and current_user.admin > 0 %}
+            <div class="alert alert-primary">
+                Вы просматриваете этот пост от имени администратора
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col ms-3 me-3 mb-3 text-center border rounded"><br>
+                <h3>Автор</h3>
                 <ul class="list-group">
+                    <li class="list-group-item">{{ user.name }}</li>
                     <li class="list-group-item">
-                        <a href="{{ url_for('post.edit', id=post['id']) }}" class="btn border rounded" style="width: 100%;">Изменить пост</a>
+                        {% if user.ban == 1 %}
+                            <span class="badge text-bg-warning">Забанен</span>
+                        {% elif user.admin == 0 %}
+                            <span class="badge text-bg-secondary">Пользователь</span>
+                        {% elif user.admin == 1 %}
+                            <span class="badge text-bg-primary">Модератор</span>
+                        {% elif user.admin == 2 %}
+                            <span class="badge text-bg-danger">Администратор</span>
+                        {% elif user.admin == 3 %}
+                            <span class="badge text-bg-info">Владелец</span>
+                        {% endif %}
                     </li>
                 </ul>
-            {% endif %}
-            <a class="btn" href="{{ url_for('main.profile') }}/{{ user.id }}">Перейти</a>
-        <br></div>
-        <div class="col ms-3 me-3 mb-3 border rounded"><p>
-            <h2>{{ post["title"] }}</h2>
-            <h4>{{ post_author }}</h4>
-            {% for line in post["content"].split("\n") %}
-                {{ line }}<br>
-            {% endfor %}
-        </p></div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col border rounded">
-            <br>
-            <h5>Обсуждение</h5>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="alert alert-dismissible alert-danger" role="alert">
-                        {{ messages[0] }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endif %}
-            {% endwith %}
-            {% if current_user.ban != 1 and not current_user.is_anonymous %}
-                <form method="POST">
-                    <div class="mb-3">
-                        <input type="text" required class="form-control" name="content" value="{{ content if content else '' }}"><br>
-                        <button type="submit" class="btn btn-primary">Отправить</button>
-                    </div>
-                </form>
-            {% endif %}
-            <hr>
-            {% for comment in comments %}
-                <strong><a class="text-secondary" href="{{ url_for('main.profile_id', id=comment[3])}}">{{ comment[0] }}</a></strong>
-                {% if comment[4] == 1 %}
-                    <span class="badge text-bg-warning">Забанен</span>
-                {% elif comment[1] == 0 %}
-                    <span class="badge text-bg-secondary">Пользователь</span>
-                {% elif comment[1] == 1 %}
-                    <span class="badge text-bg-primary">Модератор</span>
-                {% elif comment[1] == 2 %}
-                    <span class="badge text-bg-danger">Администратор</span>
-                {% elif comment[1] == 3 %}
-                    <span class="badge text-bg-info">Владелец</span>
-                {% endif %}
-                {{ comment[2] }}
                 <br>
-            {% endfor %}
-            <hr>
+                {% if post["author_id"] == current_user.id %}
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="{{ url_for('post.edit', id=post['id']) }}" class="btn border rounded" style="width: 100%;">Изменить пост</a>
+                        </li>
+                    </ul>
+                {% endif %}
+                <a class="btn" href="{{ url_for('main.profile') }}/{{ user.id }}">Перейти</a>
+            <br></div>
+            <div class="col ms-3 me-3 mb-3 border rounded"><p>
+                <h2>{{ post["title"] }}</h2>
+                <h4>{{ post_author }}</h4>
+                {% for line in post["content"].split("\n") %}
+                    {{ line }}<br>
+                {% endfor %}
+            </p></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col border rounded">
+                <br>
+                <h5>Обсуждение</h5>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-dismissible alert-danger" role="alert">
+                            {{ messages[0] }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% if current_user.ban != 1 and not current_user.is_anonymous %}
+                    <form method="POST">
+                        <div class="mb-3">
+                            <input type="text" required class="form-control" name="content" value="{{ content if content else '' }}"><br>
+                            <button type="submit" class="btn btn-primary">Отправить</button>
+                        </div>
+                    </form>
+                {% endif %}
+                <hr>
+                {% for comment in comments %}
+                    <strong><a class="text-secondary" href="{{ url_for('main.profile_id', id=comment[3])}}">{{ comment[0] }}</a></strong>
+                    {% if comment[4] == 1 %}
+                        <span class="badge text-bg-warning">Забанен</span>
+                    {% elif comment[1] == 0 %}
+                        <span class="badge text-bg-secondary">Пользователь</span>
+                    {% elif comment[1] == 1 %}
+                        <span class="badge text-bg-primary">Модератор</span>
+                    {% elif comment[1] == 2 %}
+                        <span class="badge text-bg-danger">Администратор</span>
+                    {% elif comment[1] == 3 %}
+                        <span class="badge text-bg-info">Владелец</span>
+                    {% endif %}
+                    {{ comment[2] }}
+                    <br>
+                {% endfor %}
+                <hr>
+            </div>
         </div>
     </div>
-</div>
-
 {% endblock %}
