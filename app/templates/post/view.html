@@ -3,16 +3,13 @@
 {% block content %}
     <div class="container">
         <br>
-        {% if user.ban == 1 and current_user.admin > 0 %}
-            <div class="alert alert-primary">
-                Вы просматриваете этот пост от имени администратора
-            </div>
-        {% endif %}
         <div class="row">
-            <div class="col ms-3 me-3 mb-3 text-center border rounded"><br>
-                <h3>Автор</h3>
+            <div class="col-3 text-center bg-body rounded shadow-sm" style="padding: 1%;">
+                <div class="modal-header mb-3">
+                    <h5 class="modal-title">Автор</h5>
+                </div>
                 <ul class="list-group">
-                    <li class="list-group-item">{{ user.name }}</li>
+                    <li class="list-group-item"><a href="{{ url_for('main.profile') }}/{{ user.id }}" class="text-body">{{ user.name }}</a></li>
                     <li class="list-group-item">
                         {% if user.ban == 1 %}
                             <span class="badge text-bg-warning">Забанен</span>
@@ -28,26 +25,26 @@
                     </li>
                 </ul>
                 <br>
-                {% if post["author_id"] == current_user.id %}
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <a href="{{ url_for('post.edit', id=post['id']) }}" class="btn border rounded" style="width: 100%;">Изменить пост</a>
-                        </li>
-                    </ul>
-                {% endif %}
-                <a class="btn" href="{{ url_for('main.profile') }}/{{ user.id }}">Перейти</a>
-            <br></div>
-            <div class="col ms-3 me-3 mb-3 border rounded"><p>
-                <h2>{{ post["title"] }}</h2>
-                <h4>{{ post_author }}</h4>
+            </div>
+            <div class="col ms-2 bg-body rounded shadow-sm" style="padding: 1%;"><p>
+                <div class="modal-header mb-3">
+                    <h4 class="modal-title text-center">{{ post["title"] }}</h4>
+                    {% if post["author_id"] == current_user.id %}
+                        <button class="btn" data-bs-toggle="modal" data-bs-target="#editPostModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg>
+                        </button>
+                    {% endif %}
+                </div>
+                
                 {% for line in post["content"].split("\n") %}
                     {{ line }}<br>
                 {% endfor %}
             </p></div>
         </div>
-        <br>
         <div class="row">
-            <div class="col border rounded">
+            <div class="my-3 p-3 bg-body rounded shadow-sm">
                 <br>
                 <h5>Обсуждение</h5>
                 {% with messages = get_flashed_messages() %}
@@ -84,6 +81,31 @@
                     <br>
                 {% endfor %}
                 <hr>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit post modal -->
+    <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Изменить описание профиля</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ url_for('post.edit', id=post['id']) }}" spellcheck="false">
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Заголовок:</label>
+                            <input class="form-control" name="title" value="{{ post['title'] }}" autocomplete="off">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Содержание:</label>
+                            <textarea class="form-control" name="content" rows="20" autocomplete="off">{{ post['content'] }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Применить</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

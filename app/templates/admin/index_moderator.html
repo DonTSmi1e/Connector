@@ -6,7 +6,7 @@
         <center><h2>Панель модератора</h2></center>
         <div class="box">
             <br>
-            <div class="container">
+            <div class="column is-4 is-offset-4 container-fluid bg-dark rounded" style="width: 90%; padding: 1%;">
                 <br><h4>Утилиты</h4><hr>
                 <form method="POST" action="{{ url_for('admin.utils', id=1) }}">
                     <button type="submit" class="btn btn-primary">Очистить недоступные публикации</button>
@@ -15,12 +15,12 @@
                 <br><h4>Управление БД</h4><hr>
                 <form method="POST" action="{{ url_for('admin.utils', id=7) }}">
                     <label class="form-label">ID поста</label>
-                    <input type="text" class="form-control" name="id" autocomplete="off">
+                    <input type="text" class="form-control" name="id" autocomplete="off"><br>
                     <button type="submit" class="btn btn-danger">Удалить пост</button>
                 </form><hr>
                 <form method="POST" action="{{ url_for('admin.utils', id=8) }}">
                     <label class="form-label">ID аккаунта</label>
-                    <input type="text" class="form-control" name="id" autocomplete="off">
+                    <input type="text" class="form-control" name="id" autocomplete="off"><br>
                     <button type="submit" class="btn btn-warning">Забанить/разбанить</button>
                 </form><br>
             </div>

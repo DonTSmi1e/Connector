@@ -5,8 +5,18 @@
 <div class="container">
     <br>
     <div class="row">
-        <div class="col ms-3 me-3 mb-3 text-center border rounded"><br>
-            <h3>Профиль</h3>
+        <div class="col-3 text-center bg-body rounded shadow-sm" style="padding: 1%;">
+            <div class="modal-header mb-3">
+                <h5 class="modal-title">Профиль</h5>
+                {% if not current_user.is_anonymous and current_user.id == user.id %}
+                    <button class="btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                        </svg>
+                    </button>
+                {% endif %}
+            </div>
             <ul class="list-group">
                 <li class="list-group-item">{{ user.name }}</li>
                 <li class="list-group-item">
@@ -22,19 +32,9 @@
                         <span class="badge text-bg-info">Владелец</span>
                     {% endif %}
                 </li>
-                {% if not current_user.is_anonymous and user.id == current_user.id %}
-                    <li class="list-group-item">
-                        <a href="{{ url_for('main.profile_settings') }}" class="btn border rounded" style="width: 100%;">Настройки</a>
-                        {% if user.ban != 1 %}
-                            <hr>
-                            <a href="{{ url_for('post.create') }}" class="btn border rounded" style="width: 100%;">Создать пост</a>
-                        {% endif %}
-                    </li>
-                {% endif %}
             </ul>
-            ID: {{ user.id }}
         </div>
-        <div class="col ms-3 me-3 mb-3 border rounded"><p>
+        <div class="col ms-2 bg-body rounded shadow-sm" style="padding: 1%;"><p>
             {% if user.admin >= 2 and user.ban != 1 %}
                 {% for line in user.description.split("\n") %}
                     {{ line | safe }}<br>
@@ -46,21 +46,43 @@
             {% endif %}
         </p></div>
     </div>
-    <br>
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
-        <h6 class="border-bottom pb-2 mb-0">Активные публикации</h6>
-        {% for post in posts %}
-        <div class="d-flex text-body-secondary pt-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle flex-shrink-0 me-2" viewBox="0 0 16 16" dy=".3em">
-                <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-5-.5H7a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1 0-1zm0 3h7a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"/>
-                <title>{{ user.name }}</title>
-            </svg>
-            <p class="pb-3 mb-0 small lh-sm border-bottom text-truncate">
-                <strong class="d-block text-gray-dark"><a href="/post/{{ post['id'] }}">{{ post["title"] }}</a></strong>
-                {{ post["content"] }}
-            </p>
+    <div class="row">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h6 class="border-bottom pb-2 mb-0">Публикации пользователя</h6>
+            {% for post in posts %}
+                <div class="d-flex text-body-secondary pt-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle flex-shrink-0 me-2" viewBox="0 0 16 16" dy=".3em">
+                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zm-5-.5H7a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1 0-1zm0 3h7a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"/>
+                        <title>{{ user.name }}</title>
+                    </svg>
+                    <p class="pb-3 mb-0 small lh-sm border-bottom text-truncate">
+                        <strong class="d-block text-gray-dark"><a href="/post/{{ post['id'] }}">{{ post["title"] }}</a></strong>
+                        {{ post["content"] }}
+                    </p>
+                </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+    </div>
+</div>
+
+<!-- Edit profile modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Изменить описание профиля</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('main.profile_settings')}}" spellcheck="false">
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Изменить описание профиля:</label>
+                        <textarea class="form-control" name="description" rows="15" autocomplete="off">{{ current_user.description }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Применить</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
