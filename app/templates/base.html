@@ -48,6 +48,16 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('help.index') }}">Помощь</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Изменить тему
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><button type="button" class="dropdown-item" data-bs-theme-value="night">Ночная (dev)</button></li>
+                                <li><button type="button" class="dropdown-item" data-bs-theme-value="dark">Темная</button></li>
+                                <li><button type="button" class="dropdown-item" data-bs-theme-value="light">Светлая</button></li>
+                            </ul>
+                        </li>
                         {% if not current_user.is_anonymous %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,26 +73,16 @@
                                 </ul>
                             </li>
                         {% else %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Авторизация
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">Вход</a></li>
-                                <li><a class="dropdown-item" href="{{ url_for('auth.signup') }}">Регистрация</a></li>
-                            </ul>
-                        </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Авторизация
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">Вход</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('auth.signup') }}">Регистрация</a></li>
+                                </ul>
+                            </li>
                         {% endif %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Изменить тему
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><button type="button" class="dropdown-item" data-bs-theme-value="night">Ночная (dev)</button></li>
-                                <li><button type="button" class="dropdown-item" data-bs-theme-value="dark">Темная</button></li>
-                                <li><button type="button" class="dropdown-item" data-bs-theme-value="light">Светлая</button></li>
-                            </ul>
-                        </li>
                     </ul>
                 </div>
             </div>
