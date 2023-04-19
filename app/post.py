@@ -136,18 +136,18 @@ def create():
 
             if title.replace(" ", "") == "" or content.replace(" ", "") == "":
                 flash('Заголовок и содержание не могут быть пустыми')
-                return redirect(url_for('post.create', id=id) + f"?title={title}&content={content}")
+                return redirect(url_for('post.create', title=title, content=content))
 
             if post:
                 flash('Пост с таким же названием уже существует.')
-                return redirect(url_for('post.create')) + f"?title={title}&content={content}"
+                return redirect(url_for('post.create', title=title, content=content))
 
             if len(title) > 100+1:
                 flash('Максимальная длина заголовка: 100 символов')
-                return redirect(url_for('post.create') + f"?title={title}&content={content}")
+                return redirect(url_for('post.create', title=title, content=content))
             elif len(content) > 1500+1:
                 flash('Максимальная длина содержания: 1500 символов')
-                return redirect(url_for('post.create') + f"?title={title}&content={content}")
+                return redirect(url_for('post.create', title=title, content=content))
 
             new_post = Post(author_id=current_user.id, title=title, content=content, active=datetime.datetime.now())
 
@@ -156,7 +156,7 @@ def create():
 
             notification = jsonify(id=secrets.token_urlsafe(), title=f"<a href='{url_for('post.view', id=Post.query.filter_by(title=title).first().id)}'>{title}</a>", content=f"<strong>{current_user.name}</strong> создал новый пост.")
 
-            return redirect(url_for('main.profile'))
+            return redirect(url_for('post.index'))
         else:
             flash('Ваш аккаунт заблокирован, вы не можете создавать публикации.')
             return redirect(url_for('post.create'))
