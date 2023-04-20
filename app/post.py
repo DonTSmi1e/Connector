@@ -68,8 +68,8 @@ def view(id):
         else:
             post_author = User.query.filter_by(id=post.author_id).first()
 
-            if not current_user.is_anonymous:
-                return redirect(url_for("main.profile", id=post_author.id))
+            if post_author.ban == 1 and current_user.is_anonymous:
+                return redirect(url_for("auth.login"))
             else:
                 post_comments = Comment.query.filter_by(post_id=post.id)
                 comments = []
